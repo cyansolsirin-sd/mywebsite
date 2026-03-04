@@ -1,0 +1,5 @@
+{
+  "name": "Scriptorium Reader",
+  "description": "A medieval-styled markdown reader with automatic TOC and marginalia.",
+  "requestFramePermissions": []
+}

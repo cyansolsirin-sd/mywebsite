@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scriptorium Reader</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- 引入了 MedievalSharp 用于目录 -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=MedievalSharp&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+    
+    <!-- Marked.js & Highlight.js -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark-dimmed.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <!-- Configuration -->
+    <script>
+        const CONFIG = {
+            markdownFile: 'content.md',
+            themeColor: '#8a1c1c', // Rubrication red
+            baseFontSize: '19px',
+            parchmentColor: '#fdf6e3', // Solarized light-ish
+            goldColor: '#d4af37'
+        };
+
+        // Tailwind Config for Custom Fonts/Colors
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        parchment: CONFIG.parchmentColor,
+                        rubric: CONFIG.themeColor,
+                        gold: CONFIG.goldColor,
+                        ink: '#2b2b2b',
+                    },
+                    fontFamily: {
+                        'medieval-header': ['"Uncial Antiqua"', '"Microsoft YaHei"', 'sans-serif'],
+                        'medieval-body': ['"Microsoft YaHei"', '"Heiti SC"', 'sans-serif'],
+                        'medieval-toc': ['"MedievalSharp"', '"Microsoft YaHei"', 'serif'], /* 目录专用字体 */
+                        'medieval-deco': ['"Cinzel Decorative"', 'cursive'],
+                    },
+                    backgroundImage: {
+                        'parchment-texture': "url('https://www.transparenttextures.com/patterns/aged-paper.png')",
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #eaddcf;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #8a1c1c;
+            border: 2px solid #eaddcf;
+            border-radius: 6px;
+        }
+
+        /* Typography & Base */
+        body {
+            background-color: #fdf6e3;
+            background-image: url('https://www.transparenttextures.com/patterns/aged-paper.png'); /* Subtle noise */
+            color: #2b2b2b;
+            /* 1. 字体改为微软雅黑优先，统一中英文显示 */
+            font-family: 'Microsoft YaHei', 'Heiti SC', 'SimHei', sans-serif;
+            font-size: 19px; 
+            line-height: 1.9;
+        }
+
+        /* Drop Cap - 3. 去掉花哨的字体，统一使用正文字体，只保留大小和颜色 */
+        .drop-cap::first-letter {
+            float: left;
+            /* font-family: 'Cinzel Decorative', cursive;  <-- Removed */
+            font-weight: bold; /* 加粗 */
+            font-size: 5rem;
+            line-height: 0.8;
+            padding-right: 0.7rem;
+            padding-top: 0.2rem;
+            color: #8a1c1c;
+            text-shadow: 2px 2px 0px #d4af37;
+        }
+
+        /* Headers - Override Prose defaults with high specificity */
+        #content h1, #content h2, #content h3, #content h4, #content h5, #content h6,
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Cinzel Decorative', 'Microsoft YaHei', cursive;
+            color: #8a1c1c;
+            line-height: 1.3;
+            font-weight: 700;
+        }
+        
+        /* Specific Header Styles */
+        #content h1, h1 { 
+            font-size: 3rem !important; 
+            text-align: center; 
+            border-bottom: 2px solid #d4af37; 
+            padding-bottom: 1.5rem; 
+            margin-top: 2rem !important; /* Increased top margin */
+            margin-bottom: 3rem !important; 
+        }
+        
+        #content h2, h2 { 
+            font-size: 2rem !important; 
+            border-left: 6px solid #d4af37; 
+            padding-left: 1.5rem; 
+            margin-top: 2rem !important; /* Significantly increased spacing between chapters */
+            margin-bottom: 2.5rem !important; 
+        }
+        
+        #content h3, h3 { 
+            font-size: 1.5rem !important; 
+            margin-top: 4rem !important; 
+            margin-bottom: 1.5rem !important;
+        }
+
+        /* Paragraphs */
+        p {
+            margin-bottom: 1.5em;
+            text-align: justify; 
+            letter-spacing: 0.02em; 
+        }
+
+        /* Links */
+        a {
+            color: #8a1c1c;
+            text-decoration: none;
+            border-bottom: 1px dashed #8a1c1c;
+            transition: all 0.3s ease;
+        }
+        a:hover {
+            background-color: #d4af37;
+            color: #fff;
+            border-bottom: none;
+        }
+
+        /* Footnotes Styles */
+        .footnote-ref {
+            display: inline-block;
+            vertical-align: super;
+            font-size: 0.7em;
+            width: 1.4em;
+            height: 1.4em;
+            line-height: 1.4em;
+            text-align: center;
+            border: 1px solid #8a1c1c;
+            border-radius: 50%;
+            color: #8a1c1c;
+            cursor: pointer;
+            margin: 0 2px;
+            font-family: 'Microsoft YaHei', sans-serif;
+            font-weight: bold;
+            transition: all 0.2s;
+            user-select: none;
+        }
+        .footnote-ref:hover, .footnote-ref.active {
+            background-color: #8a1c1c;
+            color: #fdf6e3;
+        }
+        
+        /* Popover Bubble */
+        #footnote-popover {
+            position: absolute;
+            background-color: #fdf6e3;
+            border: 2px solid #d4af37;
+            color: #2b2b2b;
+            padding: 12px 16px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            max-width: 280px;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            z-index: 100;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.2s, transform 0.2s;
+            pointer-events: none; /* Hidden by default */
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        #footnote-popover.visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        /* Arrow for popover (Optional, simple version first) */
+        #footnote-popover::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            margin-left: -6px;
+            width: 10px;
+            height: 10px;
+            background: #fdf6e3;
+            border-bottom: 2px solid #d4af37;
+            border-right: 2px solid #d4af37;
+            transform: rotate(45deg);
+        }
+
+        /* Blockquotes */
+        blockquote {
+            border-left: 4px solid #8a1c1c;
+            background-color: rgba(212, 175, 55, 0.1);
+            padding: 1rem 2rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            position: relative;
+        }
+        blockquote::before {
+            content: '“';
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 4rem;
+            position: absolute;
+            left: 0.2rem;
+            top: -1rem;
+            color: rgba(138, 28, 28, 0.2);
+        }
+
+        /* Code Blocks */
+        pre {
+            background: #2b2b2b !important;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            border: 2px solid #d4af37;
+            box-shadow: 5px 5px 0px rgba(0,0,0,0.2);
+            overflow-x: auto;
+        }
+        code {
+            font-family: 'Courier New', monospace;
+        }
+
+        /* TOC Active State */
+        .toc-active {
+            color: #8a1c1c;
+            font-weight: bold;
+            border-left: 3px solid #d4af37;
+            padding-left: 0.5rem;
+        }
+
+        /* Marginalia Animation */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0px); }
+        }
+        .marginalia {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        /* Loading Spinner */
+        .spinner {
+            border: 4px solid rgba(138, 28, 28, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: #8a1c1c;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center py-10 px-4 relative overflow-x-hidden">
+
+    <!-- Decorative Border (Top) -->
+    <div class="fixed top-0 left-0 w-full h-4 bg-rubric z-50 border-b-4 border-gold"></div>
+
+    <!-- Main Container -->
+    <main class="w-full max-w-[900px] relative">
+        
+        <!-- Marginalia (Left - Rabbit) -->
+        <div class="fixed bottom-4 left-4 md:bottom-10 md:left-10 w-32 md:w-40 marginalia opacity-90 z-10 pointer-events-none">
+            <!-- 
+                IMPORTANT: 
+                1. Download the rabbit image.
+                2. Rename it to "rabbit.jpg".
+                3. Place it in the same folder as this index.html file.
+            -->
+            <img src="rabbit.jpg" 
+                 alt="Medieval Rabbit with Axe" 
+                 onerror="this.style.display='none'; this.parentElement.innerHTML += '<div class=\'bg-rubric text-parchment p-2 rounded text-xs text-center border-2 border-gold\'>Missing: rabbit.jpg<br>(Download & place in folder)</div>'"
+                 class="w-full rounded-lg border-2 border-gold shadow-lg mix-blend-multiply filter sepia-[0.3]">
+            <p class="text-center font-medieval-header text-xs mt-2 text-rubric bg-parchment/80 rounded px-2">Cave Canem</p>
+        </div>
+
+        <!-- Marginalia (Right - TOC) -->
+        <aside class="hidden xl:block fixed right-8 top-24 w-64 p-6 bg-parchment/90 border-2 border-gold rounded-lg shadow-xl backdrop-blur-sm max-h-[80vh] overflow-y-auto">
+            <h3 class="text-xl font-medieval-header text-rubric mb-4 border-b border-rubric/30 pb-2">Index Rerum</h3>
+            <!-- 使用 medieval-toc 字体 -->
+            <nav id="toc" class="space-y-2 text-sm font-medieval-toc tracking-wide"></nav>
+        </aside>
+
+        <!-- Mobile TOC Toggle -->
+        <div class="xl:hidden fixed bottom-6 right-6 z-50">
+            <button id="toc-toggle" class="bg-rubric text-parchment p-3 rounded-full shadow-lg border-2 border-gold hover:scale-110 transition-transform">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobile TOC Drawer -->
+        <div id="mobile-toc" class="fixed inset-0 bg-black/50 z-40 hidden" onclick="this.classList.add('hidden')">
+            <div class="absolute right-0 top-0 h-full w-64 bg-parchment p-6 shadow-2xl border-l-4 border-gold overflow-y-auto" onclick="event.stopPropagation()">
+                <h3 class="text-xl font-medieval-header text-rubric mb-4">Index Rerum</h3>
+                <!-- 使用 medieval-toc 字体 -->
+                <nav id="mobile-toc-content" class="space-y-3 text-sm font-medieval-toc tracking-wide"></nav>
+            </div>
+        </div>
+
+        <!-- Back Button -->
+        <a href="/" class="fixed top-6 left-6 z-50 group flex items-center gap-2 transition-all duration-300">
+            <div class="w-10 h-10 bg-parchment border-2 border-rubric rounded-full flex items-center justify-center shadow-md group-hover:scale-110 transition-transform overflow-hidden">
+                <!-- 
+                    IMPORTANT: 
+                    1. Download another rabbit image (or use the same one).
+                    2. Rename it to "rabbit-icon.jpg".
+                    3. Place it in the same folder.
+                -->
+                <img src="rabbit-icon.jpg" 
+                     alt="Back" 
+                     onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\'text-rubric text-xl\'>◄</span>'"
+                     class="w-full h-full object-cover opacity-80 group-hover:opacity-100">
+            </div>
+            <span class="font-medieval-toc text-rubric text-lg opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 bg-parchment/90 px-2 py-1 rounded border border-gold shadow-sm whitespace-nowrap">
+                Back to Chronicles
+            </span>
+        </a>
+
+        <!-- Content Paper -->
+        <article class="bg-parchment shadow-2xl border border-stone-300 p-8 md:p-16 min-h-[80vh] relative mt-16 md:mt-0">
+            <!-- Corner Decorations -->
+            <div class="absolute top-0 left-0 w-16 h-16 border-t-4 border-l-4 border-gold rounded-tl-lg"></div>
+            <div class="absolute top-0 right-0 w-16 h-16 border-t-4 border-r-4 border-gold rounded-tr-lg"></div>
+            <div class="absolute bottom-0 left-0 w-16 h-16 border-b-4 border-l-4 border-gold rounded-bl-lg"></div>
+            <div class="absolute bottom-0 right-0 w-16 h-16 border-b-4 border-r-4 border-gold rounded-br-lg"></div>
+
+            <!-- Prologue Section (Embedded) -->
+            <section id="prologue" class="mb-16 border-b-2 border-rubric/30 pb-12">
+                <h1 class="text-4xl md:text-5xl text-center text-rubric font-medieval-header mb-8 border-b-2 border-gold pb-4">Foreword: Things to Know Before Reading</h1>
+                
+                <div class="bg-rubric/5 border-l-4 border-rubric p-6 my-8 rounded-r-lg italic text-stone-700">
+                    <strong class="block text-rubric text-lg mb-2 not-italic">【核心声明】</strong>
+                    本故事为作者出于自娱自乐之目的创作，内容多有随意之处。
+                </div>
+
+                <div class="prose prose-stone max-w-none font-medieval-body">
+                    <h3 class="text-2xl text-rubric font-medieval-header mt-8 mb-4">一、 创作初衷与叙事性质</h3>
+                    <ul class="list-disc pl-5 space-y-2 marker:text-rubric">
+                        <li><strong>家族史流水账</strong>：本作品基于作者对【考据姓名】与【虚构族谱】的个人偏好。叙事本质为虚构家族之延续记录，部分世代具备完整情节，部分仅为梗概记录。</li>
+                        <li><strong>虚构英格兰设定</strong>：
+                            <ul class="list-circle pl-5 mt-2 space-y-1 text-stone-600">
+                                <li><strong>历史考据</strong>：对于重大历史节点（如 1066诺曼征服、玫瑰战争等）确保其按史实发生，但细节不作过度考据，历史人物均为艺术加工版本。</li>
+                                <li><strong>虚构地理</strong>：包含多个虚构领地（男爵领级别）及简化的贵族礼仪系统。</li>
+                            </ul>
+                        </li>
+                        <li><strong>叙事风格</strong>：文内会不时出现姓名学解说及现代用语。这并非严谨的历史剧，请以虚构家族史视角阅读。</li>
+                    </ul>
+
+                    <hr class="border-rubric/20 my-8 w-1/2 mx-auto">
+
+                    <h3 class="text-2xl text-rubric font-medieval-header mt-8 mb-4">二、 核心规则：线粒体继承</h3>
+                    <p><strong>本故事之剧情视角严格遵循作者自创的「线粒体继承」规则。</strong></p>
+                    
+                    <blockquote class="border-l-4 border-gold bg-gold/10 p-4 my-4 not-italic">
+                        <strong>基本假设</strong>：该家族线粒体从始祖开始不发生突变。
+                    </blockquote>
+
+                    <ol class="list-decimal pl-5 space-y-2 marker:text-rubric marker:font-bold">
+                        <li><strong>线粒体夏娃</strong>：以 <strong>Gen 1 始祖「艾尔芙温」</strong> 为基准。</li>
+                        <li><strong>继承要求</strong>：每一代的故事主角<strong>必须</strong>拥有与「线粒体夏娃」相同的线粒体。</li>
+                        <li><strong>多主角情况</strong>：若该代有多个主角，其中<strong>至少一人</strong>需符合线粒体继承条件。</li>
+                    </ol>
+
+                    <hr class="border-rubric/20 my-8 w-1/2 mx-auto">
+
+                    <h3 class="text-2xl text-rubric font-medieval-header mt-8 mb-4">三、 姓名标注规范</h3>
+                    <p>基于姓名学研究之主旨，角色出场、更名或必要标注时，均会附带<strong>英文或对应语言原文</strong>。</p>
+
+                    <div class="overflow-x-auto my-6">
+                        <table class="w-full text-left border-collapse border border-rubric/20">
+                            <thead>
+                                <tr class="bg-rubric/10 text-rubric">
+                                    <th class="p-3 border border-rubric/20 font-medieval-header">标注格式</th>
+                                    <th class="p-3 border border-rubric/20 font-medieval-header">适用角色类型说明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="hover:bg-rubric/5">
+                                    <td class="p-3 border border-rubric/20 font-bold font-mono text-sm">(Name, Gen X)</td>
+                                    <td class="p-3 border border-rubric/20"><strong>核心原创人物</strong>：与始祖艾尔芙温拥有相同线粒体</td>
+                                </tr>
+                                <tr class="hover:bg-rubric/5">
+                                    <td class="p-3 border border-rubric/20 font-bold font-mono text-sm">(Name)</td>
+                                    <td class="p-3 border border-rubric/20"><strong>普通原创人物</strong></td>
+                                </tr>
+                                <tr class="hover:bg-rubric/5">
+                                    <td class="p-3 border border-rubric/20 font-bold font-mono text-sm">脚注</td>
+                                    <td class="p-3 border border-rubric/20"><strong>真实历史人物</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p class="text-center font-medieval-deco text-xl text-rubric mt-12">Thank you for your patience in reading. Have a pleasant journey.</p>
+                </div>
+            </section>
+
+            <!-- Loading State -->
+            <div id="loading" class="flex flex-col items-center justify-center py-20">
+                <div class="spinner mb-4"></div>
+                <p class="font-medieval-header text-rubric animate-pulse">Scribing...</p>
+            </div>
+
+            <!-- Error State -->
+            <div id="error" class="hidden text-center py-10 text-red-800">
+                <h2 class="text-2xl font-bold mb-2">Hic Sunt Dracones</h2>
+                <p>Could not fetch the manuscript. Ensure you are running this via a local server (http), not file://.</p>
+                <p class="text-sm mt-4 opacity-75">Error: <span id="error-msg"></span></p>
+            </div>
+
+            <!-- Markdown Content -->
+            <div id="content" class="prose prose-stone max-w-none hidden">
+                <!-- Content injected here -->
+            </div>
+            
+            <!-- Footnote Popover Container -->
+            <div id="footnote-popover"></div>
+        </article>
+
+        <!-- Footer -->
+        <footer class="text-center mt-12 mb-8 text-stone-500 font-medieval-body text-sm">
+            <p>Illuminated by Tailwind & Marked</p>
+            <p class="text-xs opacity-50">Anno Domini MMXXV</p>
+        </footer>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const contentDiv = document.getElementById('content');
+            const tocDiv = document.getElementById('toc');
+            const mobileTocContent = document.getElementById('mobile-toc-content');
+            const loadingDiv = document.getElementById('loading');
+            const errorDiv = document.getElementById('error');
+            const errorMsg = document.getElementById('error-msg');
+            const popover = document.getElementById('footnote-popover');
+
+            // Mobile TOC Toggle
+            document.getElementById('toc-toggle').addEventListener('click', () => {
+                document.getElementById('mobile-toc').classList.remove('hidden');
+            });
+
+            // Fetch and Render
+            fetch(CONFIG.markdownFile)
+                .then(response => {
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                    return response.text();
+                })
+                .then(markdown => {
+                    // 2. Pre-process Markdown for Footnotes: 
+                    // Support both [1](content) and **[1](content)** formats
+                    // We do this BEFORE marked parses it, so it doesn't become a standard link.
+                    const footnoteRegex = /(?:\*\*)?\[(\d+)\]\((.*?)\)(?:\*\*)?/g;
+                    const processedMarkdown = markdown.replace(footnoteRegex, (match, num, content) => {
+                        // Encode content to be safe in data attribute
+                        const safeContent = content.replace(/"/g, '&quot;');
+                        return `<sup class="footnote-ref" data-content="${safeContent}">${num}</sup>`;
+                    });
+
+                    // Configure Marked
+                    marked.setOptions({
+                        highlight: function(code, lang) {
+                            const language = highlight.getLanguage(lang) ? lang : 'plaintext';
+                            return highlight.highlight(code, { language }).value;
+                        },
+                        langPrefix: 'hljs language-'
+                    });
+
+                    // Parse Markdown
+                    const htmlContent = marked.parse(processedMarkdown);
+                    contentDiv.innerHTML = htmlContent;
+
+                    // Apply Drop Cap to first paragraph
+                    const firstP = contentDiv.querySelector('p');
+                    if (firstP) firstP.classList.add('drop-cap');
+
+                    // Generate TOC
+                    generateTOC();
+
+                    // Init Footnotes
+                    initFootnotes();
+
+                    // Show Content
+                    loadingDiv.classList.add('hidden');
+                    contentDiv.classList.remove('hidden');
+                })
+                .catch(err => {
+                    console.error('Fetch error:', err);
+                    loadingDiv.classList.add('hidden');
+                    errorDiv.classList.remove('hidden');
+                    errorMsg.textContent = err.message;
+                });
+
+            function generateTOC() {
+                const headers = contentDiv.querySelectorAll('h1, h2, h3');
+                if (headers.length === 0) return;
+
+                headers.forEach((header, index) => {
+                    // Create ID for header
+                    const id = 'header-' + index;
+                    header.id = id;
+
+                    // Create TOC item
+                    const level = parseInt(header.tagName.substring(1));
+                    const link = document.createElement('a');
+                    link.href = '#' + id;
+                    link.textContent = header.textContent;
+                    link.className = `block py-1 hover:text-rubric transition-colors duration-200 ${level === 1 ? 'font-bold mt-2' : 'ml-' + (level * 2)}`;
+                    
+                    // Add to Desktop TOC
+                    tocDiv.appendChild(link.cloneNode(true));
+                    
+                    // Add to Mobile TOC
+                    const mobileLink = link.cloneNode(true);
+                    mobileLink.addEventListener('click', () => {
+                        document.getElementById('mobile-toc').classList.add('hidden');
+                    });
+                    mobileTocContent.appendChild(mobileLink);
+                });
+
+                // Scroll Spy
+                window.addEventListener('scroll', () => {
+                    let current = '';
+                    headers.forEach(header => {
+                        const sectionTop = header.offsetTop;
+                        if (scrollY >= sectionTop - 100) {
+                            current = header.getAttribute('id');
+                        }
+                    });
+
+                    document.querySelectorAll('#toc a').forEach(a => {
+                        a.classList.remove('toc-active');
+                        if (a.getAttribute('href').includes(current) && current !== '') {
+                            a.classList.add('toc-active');
+                        }
+                    });
+                });
+            }
+
+            function initFootnotes() {
+                let activeRef = null;
+
+                // Handle clicks on footnote references
+                contentDiv.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('footnote-ref')) {
+                        e.stopPropagation(); // Prevent document click from closing immediately
+                        
+                        const ref = e.target;
+                        const content = ref.getAttribute('data-content');
+
+                        // If clicking the same one, toggle off
+                        if (activeRef === ref) {
+                            hidePopover();
+                            return;
+                        }
+
+                        // Show popover
+                        showPopover(ref, content);
+                    }
+                });
+
+                // Close popover when clicking anywhere else
+                document.addEventListener('click', (e) => {
+                    if (activeRef && !popover.contains(e.target) && e.target !== activeRef) {
+                        hidePopover();
+                    }
+                });
+
+                function showPopover(ref, content) {
+                    // Set content
+                    popover.innerHTML = content;
+                    
+                    // Reset state to calculate dimensions
+                    popover.classList.remove('visible');
+                    activeRef = ref;
+                    
+                    // Highlight ref
+                    document.querySelectorAll('.footnote-ref').forEach(el => el.classList.remove('active'));
+                    ref.classList.add('active');
+
+                    // Calculate Position
+                    // We need to position it relative to the document or the article
+                    // Since article is relative, and popover is inside article, we use offset
+                    
+                    const refRect = ref.getBoundingClientRect();
+                    const articleRect = contentDiv.parentElement.getBoundingClientRect(); // article
+                    
+                    // Position: Center above the number
+                    // Left relative to article = (ref left - article left) + (ref width / 2) - (popover width / 2)
+                    // Top relative to article = (ref top - article top) - popover height - arrow space
+                    
+                    // Temporarily show to get width/height
+                    popover.style.opacity = '0';
+                    popover.style.display = 'block';
+                    
+                    const popWidth = popover.offsetWidth;
+                    const popHeight = popover.offsetHeight;
+                    
+                    let left = (refRect.left - articleRect.left) + (refRect.width / 2) - (popWidth / 2);
+                    let top = (refRect.top - articleRect.top) - popHeight - 12; // 12px gap
+
+                    // Boundary checks (simple)
+                    if (left < 0) left = 10;
+                    if (left + popWidth > articleRect.width) left = articleRect.width - popWidth - 10;
+
+                    popover.style.left = left + 'px';
+                    popover.style.top = top + 'px';
+                    popover.style.display = ''; // Clear inline display
+                    popover.style.opacity = ''; // Clear inline opacity
+
+                    // Trigger animation
+                    requestAnimationFrame(() => {
+                        popover.classList.add('visible');
+                    });
+                }
+
+                function hidePopover() {
+                    popover.classList.remove('visible');
+                    if (activeRef) {
+                        activeRef.classList.remove('active');
+                        activeRef = null;
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

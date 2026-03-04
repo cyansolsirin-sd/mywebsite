@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Family Chronicle: 1066-1707</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Cinzel+Decorative:wght@400;700;900&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        /* Base Setup */
+        body {
+            width: 1920px;
+            margin: 0 auto;
+            background-color: #f4e4bc;
+            background-image: url('https://images.unsplash.com/photo-1585366119957-e9730b6d0f60?q=80&w=2071&auto=format&fit=crop'); /* Parchment texture */
+            background-size: cover;
+            background-attachment: fixed;
+            background-blend-mode: multiply;
+            font-family: 'IM Fell English', serif;
+            color: #2C2C2C;
+            overflow-x: hidden;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 {
+            font-family: 'MedievalSharp', cursive;
+            color: #2C2C2C;
+        }
+
+        .drop-cap {
+            float: left;
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 6rem;
+            line-height: 0.8;
+            padding-right: 1rem;
+            padding-top: 0.5rem;
+            color: #DC143C; /* Crimson */
+            text-shadow: 2px 2px 0px #D4AF37; /* Gold shadow */
+        }
+
+        .drop-cap-small {
+            float: left;
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 4rem;
+            line-height: 0.8;
+            padding-right: 0.5rem;
+            padding-top: 0.2rem;
+            color: #E97451; /* Burnt Sienna */
+        }
+
+        /* Parchment Container Effect */
+        .parchment-container {
+            position: relative;
+            background-color: #fdf5e6;
+            background-image: url('https://www.transparenttextures.com/patterns/aged-paper.png');
+            box-shadow: 0 0 40px rgba(0,0,0,0.3);
+            margin: 40px auto;
+            padding: 80px;
+            max-width: 1400px;
+            border-radius: 4px;
+        }
+
+        /* Deckled Edges Simulation via CSS Masking or Border Image is tricky, 
+           using a pseudo-element with rough border approach for visual approximation */
+        .parchment-container::before {
+            content: '';
+            position: absolute;
+            top: -10px; left: -10px; right: -10px; bottom: -10px;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .parchment-container::after {
+            content: '';
+            position: absolute;
+            top: 10px; left: 10px; right: 10px; bottom: 10px;
+            border: 1px solid rgba(44, 44, 44, 0.1);
+            pointer-events: none;
+        }
+
+        /* Decorative Borders */
+        .ornate-border-top {
+            height: 40px;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='20' viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 10 Q 25 20 50 10 T 100 10' fill='none' stroke='%23D4AF37' stroke-width='2'/%3E%3C/svg%3E");
+            background-repeat: repeat-x;
+            margin-bottom: 2rem;
+            opacity: 0.7;
+        }
+
+        .ornate-border-bottom {
+            height: 40px;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='20' viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 10 Q 25 0 50 10 T 100 10' fill='none' stroke='%23D4AF37' stroke-width='2'/%3E%3C/svg%3E");
+            background-repeat: repeat-x;
+            margin-top: 2rem;
+            opacity: 0.7;
+        }
+        
+        /* Timeline Styling */
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background-color: #D4AF37;
+            background-image: linear-gradient(to bottom, #D4AF37, #8B4513, #D4AF37);
+        }
+
+        .timeline-node {
+            position: relative;
+            z-index: 10;
+        }
+
+        .timeline-marker {
+            width: 40px;
+            height: 40px;
+            background-color: #DC143C;
+            border: 4px solid #D4AF37;
+            border-radius: 50%;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-family: 'MedievalSharp', cursive;
+        }
+
+        /* Illuminated Frame */
+        .illuminated-frame {
+            border: 10px solid transparent;
+            border-image: url('https://i.pinimg.com/originals/e5/23/e8/e523e8031441334c98864700778c8577.jpg') 30 stretch; 
+            /* Fallback or simple decorative border if image fails/not ideal, using CSS gradients here instead for reliability */
+            border-image: linear-gradient(45deg, #D4AF37, #8B4513, #D4AF37) 1;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
+            padding: 20px;
+            background-color: rgba(255,255,255,0.4);
+        }
+
+        /* Narrative Block Decoration */
+        .narrative-corner {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            pointer-events: none;
+        }
+        
+        .corner-tl { top: -10px; left: -10px; border-top: 4px solid #DC143C; border-left: 4px solid #DC143C; }
+        .corner-tr { top: -10px; right: -10px; border-top: 4px solid #DC143C; border-right: 4px solid #DC143C; }
+        .corner-bl { bottom: -10px; left: -10px; border-bottom: 4px solid #DC143C; border-left: 4px solid #DC143C; }
+        .corner-br { bottom: -10px; right: -10px; border-bottom: 4px solid #DC143C; border-right: 4px solid #DC143C; }
+
+        /* Specific Colors */
+        .text-crimson { color: #DC143C; }
+        .text-gold { color: #B8860B; } /* Darker gold for text readability */
+        .bg-gold { background-color: #D4AF37; }
+        .border-gold { border-color: #D4AF37; }
+        
+        /* Layout Grid helper for 1920px */
+        .main-content {
+            width: 100%;
+            padding: 4rem 0;
+        }
+
+        .flourish {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 2rem 0;
+            color: #8B4513;
+            font-size: 1.5rem;
+        }
+        
+        .flourish::before, .flourish::after {
+            content: "✦";
+            margin: 0 1rem;
+            color: #D4AF37;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="parchment-container">
+        <!-- Hero Section -->
+        <header class="text-center relative py-16 px-12 border-b-4 border-double border-[#D4AF37]">
+            <div class="ornate-border-top absolute top-0 left-0 w-full opacity-50"></div>
+            
+            <div class="flex justify-center items-center mb-6">
+                 <!-- Decorative SVG element -->
+                <svg width="60" height="60" viewBox="0 0 100 100" class="fill-current text-[#DC143C] rotate-45 mr-4">
+                    <rect x="25" y="25" width="50" height="50" stroke="#D4AF37" stroke-width="5" fill="none" />
+                    <rect x="35" y="35" width="30" height="30" fill="#DC143C" />
+                </svg>
+                <span class="text-sm font-bold tracking-[0.3em] uppercase text-[#8B4513]">Est. 1066</span>
+                <svg width="60" height="60" viewBox="0 0 100 100" class="fill-current text-[#DC143C] rotate-45 ml-4">
+                    <rect x="25" y="25" width="50" height="50" stroke="#D4AF37" stroke-width="5" fill="none" />
+                    <rect x="35" y="35" width="30" height="30" fill="#DC143C" />
+                </svg>
+            </div>
+
+            <h1 class="text-8xl mb-4 leading-tight">
+                <span class="drop-cap">F</span>amily Chronicle
+            </h1>
+            <h2 class="text-4xl italic text-[#8B4513] mt-2 mb-8">From the Battle of Hastings to the Act of Union</h2>
+            <p class="max-w-3xl mx-auto text-2xl text-[#2C2C2C] leading-relaxed">
+                A documented lineage of endurance, nobility, and the passage of time through the eras of Kings and Queens.
+            </p>
+
+            <div class="ornate-border-bottom absolute bottom-0 left-0 w-full opacity-50"></div>
+        </header>
+
+        <!-- Narrative Intro -->
+        <section class="py-20 px-12 relative">
+            <div class="max-w-5xl mx-auto relative p-10 border-2 border-dashed border-[#D4AF37] bg-[rgba(255,255,255,0.2)]">
+                <div class="narrative-corner corner-tl"></div>
+                <div class="narrative-corner corner-tr"></div>
+                <div class="narrative-corner corner-bl"></div>
+                <div class="narrative-corner corner-br"></div>
+                
+                <h3 class="text-4xl text-center mb-8 text-[#DC143C]">The Progenitors</h3>
+                <p class="text-xl leading-8 mb-6 text-justify">
+                    <span class="drop-cap-small">I</span>t begins in the fog of war, upon the fields where fates were decided by steel and blood. Our ancestors, borne of Norman stock and Saxon resilience, first appear in the dusty rolls of the Domesday Book. Through centuries of upheaval, plague, and renaissance, the line remained unbroken—a testament to the enduring spirit of the family name. This chronicle serves not merely as a record of names and dates, but as a tapestry woven from the lives of those who walked before us.
+                </p>
+                <div class="text-center mt-8">
+                    <i class="ri-quill-pen-line text-4xl text-[#D4AF37]"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- Timeline Section -->
+        <section class="py-10 relative">
+            <div class="flourish">
+                <span class="mx-4 text-3xl font-bold font-[MedievalSharp]">The Timeline of Ages</span>
+            </div>
+
+            <div class="relative max-w-6xl mx-auto mt-16 pb-20">
+                <!-- Center Line -->
+                <div class="timeline-line"></div>
+
+                <!-- Norman Era -->
+                <div class="timeline-node flex justify-between items-center w-full mb-24">
+                    <div class="w-5/12 text-right pr-12">
+                        <h3 class="text-4xl text-[#DC143C] mb-2">The Norman Era</h3>
+                        <span class="text-2xl font-bold text-[#8B4513] block mb-4">1066 - 1154</span>
+                        <p class="text-lg leading-relaxed italic">
+                            The conquest brings new lands and titles. William de Hasting establishes the first manor in Sussex.
+                        </p>
+                    </div>
+                    <div class="z-20">
+                        <div class="timeline-marker">
+                            <i class="ri-sword-line text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="w-5/12 pl-12">
+                        <div class="illuminated-frame inline-block p-4 bg-white/50 transform rotate-1 hover:rotate-0 transition-transform duration-500">
+                             <!-- Visual Placeholder for Era -->
+                            <div class="w-64 h-40 bg-[#8B4513] overflow-hidden relative">
+                                <img src="https://images.unsplash.com/photo-1626279529329-87c2b545d9b6?q=80&w=1974&auto=format&fit=crop" class="w-full h-full object-cover sepia opacity-80" alt="Norman Castle">
+                                <div class="absolute inset-0 border-4 border-[#D4AF37]/50"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Plantagenet Era -->
+                <div class="timeline-node flex justify-between items-center w-full mb-24 flex-row-reverse">
+                    <div class="w-5/12 text-left pl-12">
+                        <h3 class="text-4xl text-[#DC143C] mb-2">The Plantagenets</h3>
+                        <span class="text-2xl font-bold text-[#8B4513] block mb-4">1154 - 1485</span>
+                        <p class="text-lg leading-relaxed italic">
+                            Years of Crusades and the Hundred Years' War. Sir Thomas distinguishes himself at Agincourt.
+                        </p>
+                    </div>
+                    <div class="z-20">
+                        <div class="timeline-marker">
+                            <i class="ri-shield-cross-line text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="w-5/12 pr-12 text-right">
+                        <div class="illuminated-frame inline-block p-4 bg-white/50 transform -rotate-1 hover:rotate-0 transition-transform duration-500">
+                             <div class="w-64 h-40 bg-[#8B4513] overflow-hidden relative inline-block">
+                                <img src="https://images.unsplash.com/photo-1599554363273-01053072522a?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover sepia opacity-80" alt="Medieval Knight">
+                                <div class="absolute inset-0 border-4 border-[#D4AF37]/50"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tudor Era -->
+                <div class="timeline-node flex justify-between items-center w-full mb-24">
+                    <div class="w-5/12 text-right pr-12">
+                        <h3 class="text-4xl text-[#DC143C] mb-2">The Tudor Rose</h3>
+                        <span class="text-2xl font-bold text-[#8B4513] block mb-4">1485 - 1603</span>
+                        <p class="text-lg leading-relaxed italic">
+                            A time of court intrigue and religious reform. The family navigates the dissolution of monasteries.
+                        </p>
+                    </div>
+                    <div class="z-20">
+                        <div class="timeline-marker">
+                            <i class="ri-vip-crown-line text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="w-5/12 pl-12">
+                         <div class="illuminated-frame inline-block p-4 bg-white/50 transform rotate-2 hover:rotate-0 transition-transform duration-500">
+                             <div class="w-64 h-40 bg-[#8B4513] overflow-hidden relative">
+                                <img src="https://images.unsplash.com/photo-1566808906636-934d436c6418?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover sepia opacity-80" alt="Tudor Architecture">
+                                <div class="absolute inset-0 border-4 border-[#D4AF37]/50"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stuart Era -->
+                <div class="timeline-node flex justify-between items-center w-full">
+                    <div class="w-5/12 text-left pl-12">
+                        <h3 class="text-4xl text-[#DC143C] mb-2">The Stuart Reign</h3>
+                        <span class="text-2xl font-bold text-[#8B4513] block mb-4">1603 - 1707</span>
+                        <p class="text-lg leading-relaxed italic">
+                            Civil war divides the nation. Loyalty to the crown costs the estate dearly, but honor remains.
+                        </p>
+                    </div>
+                    <div class="z-20">
+                        <div class="timeline-marker">
+                            <i class="ri-goblet-line text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="w-5/12 pr-12 text-right">
+                         <div class="illuminated-frame inline-block p-4 bg-white/50 transform -rotate-2 hover:rotate-0 transition-transform duration-500">
+                             <div class="w-64 h-40 bg-[#8B4513] overflow-hidden relative inline-block">
+                                <img src="https://images.unsplash.com/photo-1575889989642-127e9cb650e8?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover sepia opacity-80" alt="Stuart Era Portrait style">
+                                <div class="absolute inset-0 border-4 border-[#D4AF37]/50"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Family Tree Section -->
+        <section class="py-20 px-12 relative bg-[url('https://www.transparenttextures.com/patterns/black-scales.png')]">
+            <div class="text-center mb-12">
+                 <h2 class="text-5xl text-[#2C2C2C] mb-4"><span class="text-[#DC143C] text-7xl font-[Cinzel Decorative] align-middle">G</span>enealogical Tree</h2>
+                 <div class="w-24 h-1 bg-[#D4AF37] mx-auto"></div>
+            </div>
+
+            <div class="max-w-6xl mx-auto illuminated-frame bg-[#fdf5e6]">
+                <div class="relative w-full aspect-video border-4 border-double border-[#8B4513] bg-[#fdf5e6] flex flex-col items-center justify-center p-8">
+                    <!-- Placeholder for iframe -->
+                    <div class="absolute top-4 left-4 w-16 h-16 border-t-2 border-l-2 border-[#D4AF37]"></div>
+                    <div class="absolute top-4 right-4 w-16 h-16 border-t-2 border-r-2 border-[#D4AF37]"></div>
+                    <div class="absolute bottom-4 left-4 w-16 h-16 border-b-2 border-l-2 border-[#D4AF37]"></div>
+                    <div class="absolute bottom-4 right-4 w-16 h-16 border-b-2 border-r-2 border-[#D4AF37]"></div>
+
+                    <i class="ri-organization-chart text-8xl text-[#8B4513] opacity-50 mb-4"></i>
+                    <h3 class="text-3xl text-[#2C2C2C] mb-2 font-['MedievalSharp']">Interactive Family Echo</h3>
+                    <p class="text-[#8B4513] italic">The complete branches of the lineage are displayed here.</p>
+                    <button class="mt-6 px-8 py-3 bg-[#8B4513] text-[#fdf5e6] font-[MedievalSharp] hover:bg-[#A0522D] transition-colors border-2 border-[#D4AF37] shadow-lg">
+                        Explore Full Tree
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="mt-20 py-12 text-center border-t-4 border-double border-[#D4AF37]">
+            <div class="flex justify-center space-x-8 mb-8 text-[#8B4513]">
+                <i class="ri-quill-pen-fill text-2xl"></i>
+                <i class="ri-ancient-gate-fill text-2xl"></i>
+                <i class="ri-scroll-to-bottom-fill text-2xl"></i>
+            </div>
+            <p class="text-xl font-[MedievalSharp] text-[#2C2C2C]">
+                Documented & Preserved for Posterity
+            </p>
+            <p class="text-sm mt-4 text-[#8B4513] opacity-80">
+                &copy; Anno Domini 2023 | The Family Chronicle Archive
+            </p>
+            <div class="w-full h-8 mt-8 opacity-40 bg-[url('https://www.transparenttextures.com/patterns/arches.png')]"></div>
+        </footer>
+
+    </div>
+
+    <!-- Sticky Navigation / Helper (Optional visual touch) -->
+    <div class="fixed bottom-8 right-8 z-50">
+        <div class="w-16 h-16 bg-[#8B4513] rounded-full flex items-center justify-center shadow-xl border-4 border-[#D4AF37] cursor-pointer hover:bg-[#A0522D] transition-colors group">
+            <i class="ri-arrow-up-line text-[#fdf5e6] text-2xl group-hover:-translate-y-1 transition-transform"></i>
+        </div>
+    </div>
+
+</body>
+</html>
