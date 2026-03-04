@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Family Chronicle: 1066-1707</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Cinzel+Decorative:wght@400;700;900&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+    /* 让整个页面的跳转变得丝滑 */
+    html {
+        scroll-behavior: smooth;
+    }
+
+    /* Base Setup */
+    body {
+        width: 100%; 
+        margin: 0 auto;
+        background-color: #f5f5dc; /* 纯米色背景 */
+        background-image: url('https://www.transparenttextures.com/patterns/natural-paper.png');
+        font-family: 'IM Fell English', serif;
+        color: #2C2C2C;
+        overflow-x: hidden;
+    }
+
+    /* Typography */
+    h1, h2, h3, h4 {
+        font-family: 'MedievalSharp', cursive;
+        color: #2C2C2C;
+        /* 这里预埋了换行魔法，以防你以后想在标题里换行 */
+        white-space: pre-line; 
+    }
+
+        .drop-cap {
+            float: left;
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 6rem;
+            line-height: 0.8;
+            padding-right: 1rem;
+            padding-top: 0.5rem;
+            color: #DC143C; /* Crimson */
+            text-shadow: 2px 2px 0px #D4AF37; /* Gold shadow */
+        }
+
+        .drop-cap-small {
+            float: left;
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 4rem;
+            line-height: 0.8;
+            padding-right: 0.5rem;
+            padding-top: 0.2rem;
+            color: #E97451; /* Burnt Sienna */
+        }
+
+        /* Parchment Container Effect */
+        .parchment-container {
+            position: relative;
+            background-color: #fdf5e6;
+            background-image: url('https://www.transparenttextures.com/patterns/aged-paper.png');
+            box-shadow: 0 0 40px rgba(0,0,0,0.3);
+            margin: 40px auto;
+            padding: 80px;
+            max-width: 1400px;
+            border-radius: 4px;
+        }
+
+        /* Deckled Edges Simulation via CSS Masking or Border Image is tricky, 
+           using a pseudo-element with rough border approach for visual approximation */
+        .parchment-container::before {
+            content: '';
+            position: absolute;
+            top: -10px; left: -10px; right: -10px; bottom: -10px;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .parchment-container::after {
+            content: '';
+            position: absolute;
+            top: 10px; left: 10px; right: 10px; bottom: 10px;
+            border: 1px solid rgba(44, 44, 44, 0.1);
+            pointer-events: none;
+        }
+
+        /* Decorative Borders */
+        .ornate-border-top {
+            height: 40px;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='20' viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 10 Q 25 20 50 10 T 100 10' fill='none' stroke='%23D4AF37' stroke-width='2'/%3E%3C/svg%3E");
+            background-repeat: repeat-x;
+            margin-bottom: 2rem;
+            opacity: 0.7;
+        }
+
+        .ornate-border-bottom {
+            height: 40px;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='20' viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 10 Q 25 0 50 10 T 100 10' fill='none' stroke='%23D4AF37' stroke-width='2'/%3E%3C/svg%3E");
+            background-repeat: repeat-x;
+            margin-top: 2rem;
+            opacity: 0.7;
+        }
+        
+        /* Timeline Styling */
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background-color: #D4AF37;
+            background-image: linear-gradient(to bottom, #D4AF37, #8B4513, #D4AF37);
+        }
+
+        .timeline-node {
+            position: relative;
+            z-index: 10;
+        }
+
+        .timeline-marker {
+            width: 40px;
+            height: 40px;
+            background-color: #DC143C;
+            border: 4px solid #D4AF37;
+            border-radius: 50%;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-family: 'MedievalSharp', cursive;
+        }
+
+        /* Illuminated Frame */
+        .illuminated-frame {
+            border: 10px solid transparent;
+            border-image: url('https://i.pinimg.com/originals/e5/23/e8/e523e8031441334c98864700778c8577.jpg') 30 stretch; 
+            /* Fallback or simple decorative border if image fails/not ideal, using CSS gradients here instead for reliability */
+            border-image: linear-gradient(45deg, #D4AF37, #8B4513, #D4AF37) 1;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
+            padding: 20px;
+            background-color: rgba(255,255,255,0.4);
+        }
+
+        /* Narrative Block Decoration */
+        .narrative-corner {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            pointer-events: none;
+        }
+        
+        .corner-tl { top: -10px; left: -10px; border-top: 4px solid #DC143C; border-left: 4px solid #DC143C; }
+        .corner-tr { top: -10px; right: -10px; border-top: 4px solid #DC143C; border-right: 4px solid #DC143C; }
+        .corner-bl { bottom: -10px; left: -10px; border-bottom: 4px solid #DC143C; border-left: 4px solid #DC143C; }
+        .corner-br { bottom: -10px; right: -10px; border-bottom: 4px solid #DC143C; border-right: 4px solid #DC143C; }
+
+        /* Specific Colors */
+        .text-crimson { color: #DC143C; }
+        .text-gold { color: #B8860B; } /* Darker gold for text readability */
+        .bg-gold { background-color: #D4AF37; }
+        .border-gold { border-color: #D4AF37; }
+        
+        /* Layout Grid helper for 1920px */
+        .main-content {
+            width: 100%;
+            padding: 4rem 0;
+        }
+
+        .flourish {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 2rem 0;
+            color: #8B4513;
+            font-size: 1.5rem;
+        }
+        
+        .flourish::before, .flourish::after {
+            content: "✦";
+            margin: 0 1rem;
+            color: #D4AF37;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="top"></div> 
+
+    <div class="parchment-container">
+        <header class="text-center relative py-16 px-12 border-b-4 border-double border-[#D4AF37]">
+            <div class="ornate-border-top absolute top-0 left-0 w-full opacity-50"></div>
+            
+            <div class="flex justify-center items-center mb-6">
+                 <!-- Decorative SVG element -->
+                <svg width="60" height="60" viewBox="0 0 100 100" class="fill-current text-[#DC143C] rotate-45 mr-4">
+                    <rect x="25" y="25" width="50" height="50" stroke="#D4AF37" stroke-width="5" fill="none" />
+                    <rect x="35" y="35" width="30" height="30" fill="#DC143C" />
+                </svg>
+                <span class="text-sm font-bold tracking-[0.3em] uppercase text-[#8B4513]">Est. 1066</span>
+                <svg width="60" height="60" viewBox="0 0 100 100" class="fill-current text-[#DC143C] rotate-45 ml-4">
+                    <rect x="25" y="25" width="50" height="50" stroke="#D4AF37" stroke-width="5" fill="none" />
+                    <rect x="35" y="35" width="30" height="30" fill="#DC143C" />
+                </svg>
+            </div>
+
+            <h1 class="text-8xl mb-4 leading-tight">Family Chronicle
+            </h1>
+            <h2 class="text-4xl italic text-[#8B4513] mt-2 mb-8">From the Battle of Hastings to the Act of Union</h2>
+            <p class="max-w-3xl mx-auto text-2xl text-[#2C2C2C] leading-relaxed">
+                A documented lineage of endurance, nobility, and the passage of time through the eras of Kings and Queens.
+            </p>
+
+            <div class="ornate-border-bottom absolute bottom-0 left-0 w-full opacity-50"></div>
+        </header>
+
+        <!-- Narrative Intro -->
+        <section class="py-20 px-12 relative">
+            <div class="max-w-5xl mx-auto relative p-10 border-2 border-dashed border-[#D4AF37] bg-[rgba(255,255,255,0.2)]">
+                <div class="narrative-corner corner-tl"></div>
+                <div class="narrative-corner corner-tr"></div>
+                <div class="narrative-corner corner-bl"></div>
+                <div class="narrative-corner corner-br"></div>
+                
+                <h3 class="text-4xl text-center mb-8 text-[#DC143C]">The Progenitors</h3>
+                <p class="text-xl leading-8 mb-6 text-justify">
+                    <span class="drop-cap-small">H</span>ere lies the chronicle of the mothers, daughters, and sisters whose tenacity served as the essence of every house. It is a record of names, a saga of survival, and a map of empowerment—the unbroken thread of female resilience woven into the very fabric of the realm.
+                </p>
+                <div class="text-center mt-8">
+                    <i class="ri-quill-pen-line text-4xl text-[#D4AF37]"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- Timeline Section -->
+        <section class="py-10 relative">
+            <div class="flourish">
+                <span class="mx-4 text-3xl font-bold font-[MedievalSharp]">The Chronology of Generations </span>
+            </div>
+
+            <div class="relative max-w-6xl mx-auto mt-16 pb-20">
+                <!-- Center Line -->
+                <div class="timeline-line"></div>
+
+<div class="timeline-node flex justify-between items-center w-full mb-24">
+                    <div class="w-5/12 text-right pr-12">
+                        <h3 class="text-4xl text-[#DC143C] mb-2"><p>Gen 1<p>
+<p>The Fountainhead<p></h3>
+                        <span class="text-2xl font-bold text-[#8B4513] block mb-4">Aelfwyn A.D. 1050 </span>
+                        <p class="text-lg leading-relaxed italic">
+                            “人们都叫这里艾尔芙温之湖。”                        </p>
+                    </div>
+                    <div class="z-20">
+                        <div class="timeline-marker"><i class="ri-sword-line text-xl"></i></div>
+                    </div>
+                    <div class="w-5/12 pl-12">
+                        <div class="illuminated-frame inline-block p-4 bg-white/50 transform rotate-1 hover:rotate-0 transition-transform duration-500">
+                            <div class="w-64 h-40 bg-[#8B4513] overflow-hidden relative">
+                                <img src="1 Aelfwyn.jpg" class=“w-full h-full object-cover” alt="占位图">
+                                <div class="absolute inset-0 border-4 border-[#D4AF37]/50"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-node flex justify-between items-center w-full mb-24 flex-row-reverse">
+                    <div class="w-5/12 text-left pl-12">
+                        <h3 class="text-4xl text-[#DC143C] mb-2"><p>Gen 2<p>The Fault<p></h3>
+                        <span class="text-2xl font-bold text-[#8B4513] block mb-4">Cyneburg A.D. 1071<br>Hrothgifu A.D. 1077</span>
+                        <p class="text-lg leading-relaxed italic">
+                            “致尊贵的西妮堡小姐：我愿意为了换取您的一个吻而杀人。”
+                        </p>
+                    </div>
+                    <div class="z-20">
+                        <div class="timeline-marker"><i class="ri-shield-cross-line text-xl"></i></div>
+                    </div>
+                    <div class="w-5/12 pr-12 text-right">
+                        <div class="illuminated-frame inline-block p-4 bg-white/50 transform -rotate-1 hover:rotate-0 transition-transform duration-500">
+                             <div class="w-64 h-40 bg-[#8B4513] overflow-hidden relative inline-block">
+                                <img src="2 Cyneburg.png" class=“w-full h-full object-cover” alt="占位图">
+                                <div class="absolute inset-0 border-4 border-[#D4AF37]/50"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-node flex justify-between items-center w-full mb-24">
+                    <div class="w-5/12 text-right pr-12">
+                        <h3 class="text-4xl text-[#DC143C] mb-2"><p>Gen 3<p>The Compromise<p></h3>
+                        <span class="text-2xl font-bold text-[#8B4513] block mb-4">Clothilda A.D. 1095</span>
+                        <p class="text-lg leading-relaxed italic">她发觉自己的欲望和残忍已经把自己变成了无可弥补的怪物。</p>
+                    </div>
+                    <div class="z-20"><div class="timeline-marker"><i class="ri-vip-crown-line text-xl"></i></div></div>
+                    <div class="w-5/12 pl-12">
+                        <div class="illuminated-frame inline-block p-4 bg-white/50 transform rotate-2 hover:rotate-0 transition-transform duration-500">
+                            <div class="w-64 h-40 bg-[#8B4513] overflow-hidden relative">
+                                <img src="3 克洛蒂尔达.jpg" class=“w-full h-full object-cover” alt="占位图">
+                                <div class="absolute inset-0 border-4 border-[#D4AF37]/50"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-node flex justify-between items-center w-full mb-24 flex-row-reverse">
+                    <div class="w-5/12 text-left pl-12">
+                        <h3 class="text-4xl text-[#DC143C] mb-2"><p>Gen 4<p>The Curse<p></h3>
+                        <span class="text-2xl font-bold text-[#8B4513] block mb-4">Rosamund “Rosa” A.D. 1120</span>
+                        <p class="text-lg leading-relaxed italic">“把这些都留给你，还有你的子孙后代吧；让这些土地，令你们手足相残；让这些财富，使你们众叛亲离；让你们对荣誉的执念，叫你们永不满足；让你们对他人的统治，把你们变成魔鬼。”</p>
+                    </div>
+                    <div class="z-20"><div class="timeline-marker"><i class="ri-goblet-line text-xl"></i></div></div>
+                    <div class="w-5/12 pr-12 text-right">
+                         <div class="illuminated-frame inline-block p-4 bg-white/50 transform -rotate-2 hover:rotate-0 transition-transform duration-500">
+                             <div class="w-64 h-40 bg-[#8B4513] overflow-hidden relative inline-block">
+                                <img src="4 罗莎.jpg" class=“w-full h-full object-cover” alt="占位图">
+                                <div class="absolute inset-0 border-4 border-[#D4AF37]/50"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-node flex justify-between items-center w-full mb-24">
+                    <div class="w-5/12 text-right pr-12">
+                        <h3 class="text-4xl text-[#DC143C] mb-2"><p>Gen 5<p>The Unanticipated<p></h3>
+                        <span class="text-2xl font-bold text-[#8B4513] block mb-4">Matilda A.D. 1142<br>Sybil A.D. 1144<br>Emma A.D. 1157</span>
+                        <p class="text-lg leading-relaxed italic">“因为他是王子和国王，而爱玛只是爱玛。”</p>
+                    </div>
+                    <div class="z-20"><div class="timeline-marker"><i class="ri-sword-line text-xl"></i></div></div>
+                    <div class="w-5/12 pl-12">
+                        <div class="illuminated-frame inline-block p-4 bg-white/50 transform rotate-1 hover:rotate-0 transition-transform duration-500">
+                            <div class="w-64 h-40 bg-[#8B4513] overflow-hidden relative">
+                                <img src="5 爱玛.jpg" class=“w-full h-full object-cover” alt="占位图">
+                                <div class="absolute inset-0 border-4 border-[#D4AF37]/50"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-node flex justify-between items-center w-full mb-24 flex-row-reverse">
+                    <div class="w-5/12 text-left pl-12">
+                        <h3 class="text-4xl text-[#DC143C] mb-2">Gen 6<br>The Cherished</h3>
+                        <p class="text-lg leading-relaxed italic">几个月后，法国人那边传来消息，他们对手头这些陈年败仗捉到的战俘已经失去兴趣，把剩下的人赎金改到了原先的十分之一，有些侍从甚至以一件大衣的价格就放了。<br>听到这个消息，男爵当场昏了过去。</p>
+                    </div>
+                    <div class="z-20"><div class="timeline-marker"><i class="ri-shield-cross-line text-xl"></i></div></div>
+                    <div class="w-5/12 pr-12 text-right">
+                         <div class="illuminated-frame inline-block p-4 bg-white/50 transform -rotate-1 hover:rotate-0 transition-transform duration-500">
+                             <div class="w-64 h-40 bg-[#8B4513] overflow-hidden relative inline-block">
+                                <img src="Vanquished.jpg" class=“w-full h-full object-cover” alt="占位图">
+                                <div class="absolute inset-0 border-4 border-[#D4AF37]/50"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-node flex justify-between items-center w-full mb-24">
+                    <div class="w-5/12 text-right pr-12">
+                        <h3 class="text-4xl text-[#DC143C] mb-2"><p>Gen 7<p>The Coquette<p></h3>
+                        <p class="text-lg leading-relaxed italic">做让你发自内心喜悦的决定吧，哈尔，因为这一生能真心喜悦的机会是那么少。</p>
+                    </div>
+                    <div class="z-20"><div class="timeline-marker"><i class="ri-vip-crown-line text-xl"></i></div></div>
+                    <div class="w-5/12 pl-12">
+                        <div class="illuminated-frame inline-block p-4 bg-white/50 transform rotate-2 hover:rotate-0 transition-transform duration-500">
+                            <div class="w-64 h-40 bg-[#8B4513] overflow-hidden relative">
+                                <img src="Heloise.jpg" class=“w-full h-full object-cover” alt="占位图">
+                                <div class="absolute inset-0 border-4 border-[#D4AF37]/50"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-node flex justify-between items-center w-full mb-24 flex-row-reverse">
+                    <div class="w-5/12 text-left pl-12">
+                        <h3 class="text-4xl text-[#DC143C] mb-2"><p>Gen 8<p>The Bicentennial Solitude<p></h3>
+                        <span class="text-2xl font-bold text-[#8B4513] block mb-4">Agnes A.D. 1232<br>William A.D. 1233</span>
+                        <p class="text-lg leading-relaxed italic">“愿主慈悲！难道，世上竟就没有好男人和好女人相爱的故事吗？”阿涅丝说。<br>听了这话，威廉和阿涅丝对视了几秒，然后同时笑了起来，亲吻了对方。</p>
+                    </div>
+                    <div class="z-20"><div class="timeline-marker"><i class="ri-goblet-line text-xl"></i></div></div>
+                    <div class="w-5/12 pr-12 text-right">
+                         <div class="illuminated-frame inline-block p-4 bg-white/50 transform -rotate-2 hover:rotate-0 transition-transform duration-500">
+                             <div class="w-64 h-40 bg-[#8B4513] overflow-hidden relative inline-block">
+                                <img src="威廉阿涅丝.jpg" class=“w-full h-full object-cover” alt="占位图">
+                                <div class="absolute inset-0 border-4 border-[#D4AF37]/50"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-node flex justify-between items-center w-full mb-24">
+                    <div class="w-5/12 text-right pr-12">
+                        <h3 class="text-4xl text-[#DC143C] mb-2">Gen 9<br>The Sweet-Briar’s Love</h3>
+                        <span class="text-2xl font-bold text-[#8B4513] block mb-4">Eglentyne A.D. 1263</span>
+                        <p class="text-lg leading-relaxed italic">爱情，爱情是什么？能换来好吃好穿，点头哈腰吗？自由，自由是什么，能换来土地城堡，名垂青史吗？<br>说到底，卑微和贫困，不值得留给子孙后代。难道，比起地位和荣耀，你更想给你的孩子留下这些吗？</p>
+                    </div>
+                    <div class="z-20"><div class="timeline-marker"><i class="ri-sword-line text-xl"></i></div></div>
+                    <div class="w-5/12 pl-12">
+                        <div class="illuminated-frame inline-block p-4 bg-white/50 transform rotate-1 hover:rotate-0 transition-transform duration-500">
+                            <div class="w-64 h-40 bg-[#8B4513] overflow-hidden relative">
+                                <img src="艾格兰汀.jpg" class=“w-full h-full object-cover” alt="占位图">
+                                <div class="absolute inset-0 border-4 border-[#D4AF37]/50"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-node flex justify-between items-center w-full mb-24 flex-row-reverse">
+                    <div class="w-5/12 text-left pl-12">
+                        <h3 class="text-4xl text-[#DC143C] mb-2">Gen 10<br>The Sweet-Briar’s Love</h3>
+                        <span class="text-2xl font-bold text-[#8B4513] block mb-4">Philippa A.D. 1294</span>
+                        <p class="text-lg leading-relaxed italic">“为了我这样、为了我那样……妈妈，我好为你难过。你的生活太令我感到悲哀了。”<br>菲莉帕的眼底涌起泪水。<br>“到底要什么时候，你才能意识到，你眼里根本不是我，而是你自己本应该过上的人生？”</p>
+                    </div>
+                    <div class="z-20"><div class="timeline-marker"><i class="ri-shield-cross-line text-xl"></i></div></div>
+                    <div class="w-5/12 pr-12 text-right">
+                         <div class="illuminated-frame inline-block p-4 bg-white/50 transform -rotate-1 hover:rotate-0 transition-transform duration-500">
+                             <div class="w-64 h-40 bg-[#8B4513] overflow-hidden relative inline-block">
+                                <img src="菲莉帕.jpg" class=“w-full h-full object-cover” alt="占位图">
+                                <div class="absolute inset-0 border-4 border-[#D4AF37]/50"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-node flex justify-between items-center w-full mb-24">
+                    <div class="w-5/12 text-right pr-12">
+                        <h3 class="text-4xl text-[#DC143C] mb-2">Gen 11<br>A Certain Thing Grows in Death</h3>
+                        <span class="text-2xl font-bold text-[#8B4513] block mb-4">Stephen St. Clare A.D. 1306<br>Cecylle St. Clare A.D. 1311</span>
+                        <p class="text-lg leading-relaxed italic">
+“……我只是被燕麦呛住了。”她疲倦地说，但是，笑了。今天第一次。<br>
+斯蒂芬愣了一会儿，破涕为笑。夫妇俩笑成一团。</p>
+                    </div>
+                    <div class="z-20"><div class="timeline-marker"><i class="ri-vip-crown-line text-xl"></i></div></div>
+                    <div class="w-5/12 pl-12">
+                        <div class="illuminated-frame inline-block p-4 bg-white/50 transform rotate-2 hover:rotate-0 transition-transform duration-500">
+                            <div class="w-64 h-40 bg-[#8B4513] overflow-hidden relative">
+                                <img src="acme-septimius-leighton-3-1728px.jpg" class=“w-full h-full object-cover” alt="占位图">
+                                <div class="absolute inset-0 border-4 border-[#D4AF37]/50"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-node flex justify-between items-center w-full mb-24 flex-row-reverse">
+                    <div class="w-5/12 text-left pl-12">
+                        <h3 class="text-4xl text-[#DC143C] mb-2">Gen 12<br>When Adam Delved and Eve Span Who Was Then the Gentleman</h3>
+                        <span class="text-2xl font-bold text-[#8B4513] block mb-4">Modhild “Hildy” A.D. 1356<br>Nicholas “Col” A.D. 1356</span>
+                        <p class="text-lg leading-relaxed italic">他看着她，他的希尔蒂，看她又粗又乱的头发、脸上清晰可见的日晒痕迹和雀斑、手上的老茧和裂口。<br>所有的这一切，他并非觉得不可爱，只是让他感到距离。</p>
+                    </div>
+                    <div class="z-20"><div class="timeline-marker"><i class="ri-goblet-line text-xl"></i></div></div>
+                    <div class="w-5/12 pr-12 text-right">
+                         <div class="illuminated-frame inline-block p-4 bg-white/50 transform -rotate-2 hover:rotate-0 transition-transform duration-500">
+                             <div class="w-64 h-40 bg-[#8B4513] overflow-hidden relative inline-block">
+                                <img src="希尔蒂.png" class=“w-full h-full object-cover” alt="占位图">
+                                <div class="absolute inset-0 border-4 border-[#D4AF37]/50"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-node flex justify-between items-center w-full mb-24">
+                    <div class="w-5/12 text-right pr-12">
+                        <h3 class="text-4xl text-[#DC143C] mb-2">Gen 13<br>all good things must come to an end</h3>
+                        <span class="text-2xl font-bold text-[#8B4513] block mb-4">Helena Almayne A.D. 1380</span>
+                        <p class="text-lg leading-relaxed italic">你将会爱上国王。<br>这爱是如此强烈，以至于你会被吞噬、被征服，然后，被彻底摧毁。<br>
+……她梦见玛丽安妮格的话，<br>吓得醒了过来。</p>
+                    </div>
+                    <div class="z-20"><div class="timeline-marker"><i class="ri-sword-line text-xl"></i></div></div>
+                    <div class="w-5/12 pl-12">
+                        <div class="illuminated-frame inline-block p-4 bg-white/50 transform rotate-1 hover:rotate-0 transition-transform duration-500">
+                            <div class="w-64 h-40 bg-[#8B4513] overflow-hidden relative">
+                                <img src="学者海伦.jpg" class=“w-full h-full object-cover” alt="占位图">
+                                <div class="absolute inset-0 border-4 border-[#D4AF37]/50"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-node flex justify-between items-center w-full mb-24 flex-row-reverse">
+                    <div class="w-5/12 text-left pl-12">
+                        <h3 class="text-4xl text-[#DC143C] mb-2">Gen 14<br>Our Final Day in England</h3>
+                        <span class="text-2xl font-bold text-[#8B4513] block mb-4">Fionnghuala A.D. <br>Lasairfhíona A.D.</span>
+                        <p class="text-lg leading-relaxed italic">起航吧，拉瑟伊娜。<br>去从未踏足过的故乡。
+</p>
+                    </div>
+                    <div class="z-20"><div class="timeline-marker"><i class="ri-shield-cross-line text-xl"></i></div></div>
+                    <div class="w-5/12 pr-12 text-right">
+                         <div class="illuminated-frame inline-block p-4 bg-white/50 transform -rotate-1 hover:rotate-0 transition-transform duration-500">
+                             <div class="w-64 h-40 bg-[#8B4513] overflow-hidden relative inline-block">
+                                <img src="起航吧.jpg" class=“w-full h-full object-cover” alt="占位图">
+                                <div class="absolute inset-0 border-4 border-[#D4AF37]/50"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-node flex justify-between items-center w-full mb-24">
+                    <div class="w-5/12 text-right pr-12">
+                        <h3 class="text-4xl text-[#DC143C] mb-2">Gen 15<br>The Cousins’ War</h3>
+                        <span class="text-2xl font-bold text-[#8B4513] block mb-4">Anne “Viviane” of Stormridge<br>A.D. 1436</span>
+                        <p class="text-lg leading-relaxed italic">风岭的安妮带着两个稍大点的弟弟妹妹，走进宴会厅。</p>
+                    </div>
+                    <div class="z-20"><div class="timeline-marker"><i class="ri-vip-crown-line text-xl"></i></div></div>
+                    <div class="w-5/12 pl-12">
+                        <div class="illuminated-frame inline-block p-4 bg-white/50 transform rotate-2 hover:rotate-0 transition-transform duration-500">
+                            <div class="w-64 h-40 bg-[#8B4513] overflow-hidden relative">
+                                <img src="安妮.jpg" class=“w-full h-full object-cover” alt="占位图">
+                                <div class="absolute inset-0 border-4 border-[#D4AF37]/50"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-node flex justify-between items-center w-full mb-24 flex-row-reverse">
+                    <div class="w-5/12 text-left pl-12">
+                        <h3 class="text-4xl text-[#DC143C] mb-2">Gen 16<br>A Stone Must Speak Its Mind</h3>
+                        <span class="text-2xl font-bold text-[#8B4513] block mb-4">Apollonia “Polly” A.D. 1462</span>
+                        <p class="text-lg leading-relaxed italic">“石头有自己的话要说。”</p>
+                    </div>
+                    <div class="z-20"><div class="timeline-marker"><i class="ri-goblet-line text-xl"></i></div></div>
+                    <div class="w-5/12 pr-12 text-right">
+                         <div class="illuminated-frame inline-block p-4 bg-white/50 transform -rotate-2 hover:rotate-0 transition-transform duration-500">
+                             <div class="w-64 h-40 bg-[#8B4513] overflow-hidden relative inline-block">
+                                <img src="polly.jpg" class=“w-full h-full object-cover” alt="占位图">
+                                <div class="absolute inset-0 border-4 border-[#D4AF37]/50"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-node flex justify-between items-center w-full mb-24">
+                    <div class="w-5/12 text-right pr-12">
+                        <h3 class="text-4xl text-[#DC143C] mb-2">Gen 17<br>A Story of the Clever Millwoman</h3>
+                        <span class="text-2xl font-bold text-[#8B4513] block mb-4">Gillian “Gilly the Gillyflower”<br>A.D. 1488</span>
+                        <p class="text-lg leading-relaxed italic">老寡妇梅格酒馆是欢度圣诞的最佳选择。<br>这里有方圆百里最好的酒，最宽广的庭院，以及最会说话的酒馆女招待。</p>
+                    </div>
+                    <div class="z-20"><div class="timeline-marker"><i class="ri-sword-line text-xl"></i></div></div>
+                    <div class="w-5/12 pl-12">
+                        <div class="illuminated-frame inline-block p-4 bg-white/50 transform rotate-1 hover:rotate-0 transition-transform duration-500">
+                            <div class="w-64 h-40 bg-[#8B4513] overflow-hidden relative">
+                                <img src="hicks.jpg" class=“w-full h-full object-cover” alt="占位图">
+                                <div class="absolute inset-0 border-4 border-[#D4AF37]/50"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-node flex justify-between items-center w-full mb-24 flex-row-reverse">
+                    <div class="w-5/12 text-left pl-12">
+                        <h3 class="text-4xl text-[#DC143C] mb-2">Gen 18<br>The Canterbury Pilgrims</h3>
+                        <span class="text-2xl font-bold text-[#8B4513] block mb-4">Dorothy de Ravenford A.D. 1509</span>
+                        <p class="text-lg leading-relaxed italic">桃乐丝小姐，我无法想象世上会有人不爱您；对您的崇高的爱点燃了我的生命。我唯一担忧的是，我这段生命还能燃烧多久。</p>
+                    </div>
+                    <div class="z-20"><div class="timeline-marker"><i class="ri-shield-cross-line text-xl"></i></div></div>
+                    <div class="w-5/12 pr-12 text-right">
+                         <div class="illuminated-frame inline-block p-4 bg-white/50 transform -rotate-1 hover:rotate-0 transition-transform duration-500">
+                             <div class="w-64 h-40 bg-[#8B4513] overflow-hidden relative inline-block">
+                                <img src="桃乐丝与安德烈.jpg" class=“w-full h-full object-cover” alt="占位图">
+                                <div class="absolute inset-0 border-4 border-[#D4AF37]/50"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-node flex justify-between items-center w-full mb-24">
+                    <div class="w-5/12 text-right pr-12">
+                        <h3 class="text-4xl text-[#DC143C] mb-2">Gen 19<br>The Hollow Hearts</h3>
+                        <span class="text-2xl font-bold text-[#8B4513] block mb-4">Alyx Holloway A.D. 1549<br>
+Joyce Holloway A.D. 1555<br>
+Pippa Holloway A.D. 1563</span>
+                        <p class="text-lg leading-relaxed italic">五天前，埃尔温顿庄园的老爷埃德蒙·霍洛威死了。没有人为他难过。</p>
+                    </div>
+                    <div class="z-20"><div class="timeline-marker"><i class="ri-vip-crown-line text-xl"></i></div></div>
+                    <div class="w-5/12 pl-12">
+                        <div class="illuminated-frame inline-block p-4 bg-white/50 transform rotate-2 hover:rotate-0 transition-transform duration-500">
+                            <div class="w-64 h-40 bg-[#8B4513] overflow-hidden relative">
+                                <img src="霍洛威三姐妹.jpg" class=“w-full h-full object-cover” alt="占位图">
+                                <div class="absolute inset-0 border-4 border-[#D4AF37]/50"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-node flex justify-between items-center w-full flex-row-reverse">
+                    <div class="w-5/12 text-left pl-12">
+                        <h3 class="text-4xl text-[#DC143C] mb-2">Gen 20<br>The Hollow Hearts</h3>
+                        <span class="text-2xl font-bold text-[#8B4513] block mb-4">Constance Holloway A.D. 1577<br>
+Kateryne “Cate" Ellingworth A.D. 1580</span>
+                        <p class="text-lg leading-relaxed italic">
+                            鸽子一样的女人。夜莺一样的女人。金丝雀一样的女人。<br>那如果我想做奔马，想做苍鹰呢？那如果我想做狮子，想做游隼呢？
+                        </p>
+                    </div>
+                    <div class="z-20">
+                        <div class="timeline-marker"><i class="ri-goblet-line text-xl"></i></div>
+                    </div>
+                    <div class="w-5/12 pr-12 text-right">
+                         <div class="illuminated-frame inline-block p-4 bg-white/50 transform -rotate-2 hover:rotate-0 transition-transform duration-500">
+                             <div class="w-64 h-40 bg-[#8B4513] overflow-hidden relative inline-block">
+                                <img src="Two Friends.jpg" class=“w-full h-full object-cover” alt="占位图">
+                                <div class="absolute inset-0 border-4 border-[#D4AF37]/50"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </section>
+
+        <!-- Family Tree Section -->
+        <section class="py-20 px-12 relative bg-[url('https://www.transparenttextures.com/patterns/black-scales.png')]">
+            <div class="text-center mb-12">
+                 <h2 class="text-5xl text-[#2C2C2C] mb-4"><span class="text-[#DC143C] text-7xl font-[Cinzel Decorative] align-middle">G</span>enealogical Tree</h2>
+                 <div class="w-24 h-1 bg-[#D4AF37] mx-auto"></div>
+            </div>
+
+            <div class="max-w-6xl mx-auto illuminated-frame bg-[#fdf5e6]">
+                <div class="relative w-full aspect-video border-4 border-double border-[#8B4513] bg-[#fdf5e6] flex flex-col items-center justify-center p-8">
+                    <!-- Placeholder for iframe -->
+                    <div class="absolute top-4 left-4 w-16 h-16 border-t-2 border-l-2 border-[#D4AF37]"></div>
+                    <div class="absolute top-4 right-4 w-16 h-16 border-t-2 border-r-2 border-[#D4AF37]"></div>
+                    <div class="absolute bottom-4 left-4 w-16 h-16 border-b-2 border-l-2 border-[#D4AF37]"></div>
+                    <div class="absolute bottom-4 right-4 w-16 h-16 border-b-2 border-r-2 border-[#D4AF37]"></div>
+
+                    <i class="ri-organization-chart text-8xl text-[#8B4513] opacity-50 mb-4"></i>
+<h3 class="text-3xl text-[#2C2C2C] mb-4 font-['MedievalSharp']">The Aelfwyn Family Chronicle</h3>
+<div class="w-full overflow-hidden rounded-lg border-2 border-[#8B4513] shadow-inner bg-[#f4ecd8]">
+    <iframe 
+        src="mytree.html" 
+        width="100%" 
+        height="700px" 
+        frameborder="0"
+        title="Family Tree">
+    </iframe>
+</div>
+                    <p class="text-[#8B4513] ">Recorded by Cyansol Sirin</p>
+        </section>
+
+        <!-- Footer -->
+        <footer class="mt-20 py-12 text-center border-t-4 border-double border-[#D4AF37]">
+            <div class="flex justify-center space-x-8 mb-8 text-[#8B4513]">
+                <i class="ri-quill-pen-fill text-2xl"></i>
+                <i class="ri-ancient-gate-fill text-2xl"></i>
+                <i class="ri-scroll-to-bottom-fill text-2xl"></i>
+            </div>
+            <p class="text-xl font-[MedievalSharp] text-[#2C2C2C]">
+                Documented & Preserved for Posterity
+            </p>
+            <p class="text-sm mt-4 text-[#8B4513] opacity-80">
+                &copy; Anno Domini 2026 | The Family Chronicle Archive
+            </p>
+            <div class="w-full h-8 mt-8 opacity-40 bg-[url('https://www.transparenttextures.com/patterns/arches.png')]"></div>
+        </footer>
+
+    </div>
+
+<div class="fixed bottom-8 right-8 z-50">
+        <a href="#top" class="w-16 h-16 bg-[#8B4513] rounded-full flex items-center justify-center shadow-xl border-4 border-[#D4AF37] cursor-pointer hover:bg-[#A0522D] transition-all group">
+            <i class="ri-arrow-up-line text-[#fdf5e6] text-2xl group-hover:-translate-y-1 transition-transform"></i>
+        </a>
+    </div>
+
+</body>
+</html>
