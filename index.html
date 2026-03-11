@@ -58,6 +58,7 @@
         /* Parchment Container Effect */
         .parchment-container {
             position: relative;
+            z-index: 10;
             background-color: #fdf5e6;
             background-image: url('https://www.transparenttextures.com/patterns/aged-paper.png');
             box-shadow: 0 0 40px rgba(0,0,0,0.3);
@@ -113,6 +114,100 @@
             height: 100%;
             background-color: #D4AF37;
             background-image: linear-gradient(to bottom, #D4AF37, #8B4513, #D4AF37);
+        }
+
+        /* Historical Ruler Styling */
+        #historical-ruler {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0; /* Behind the parchment container */
+            overflow: hidden;
+        }
+
+        .ruler-tick {
+            position: absolute;
+            left: 0;
+        }
+
+        .tick-decade {
+            width: 3vw;
+            max-width: 40px;
+            border-bottom: 1px solid #8B4513;
+            opacity: 0.5;
+        }
+
+        .tick-century {
+            width: 8vw;
+            max-width: 120px;
+            border-bottom: 2px solid #DC143C;
+            opacity: 0.8;
+        }
+
+        .tick-half-century {
+            width: 5vw;
+            max-width: 80px;
+            border-bottom: 1px solid #DC143C;
+            opacity: 0.6;
+        }
+
+        .tick-label {
+            position: absolute;
+            left: calc(100% + 10px);
+            top: -14px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #DC143C;
+            font-family: 'Cinzel Decorative', cursive;
+            white-space: nowrap;
+        }
+
+        .tick-label-half {
+            position: absolute;
+            left: calc(100% + 10px);
+            top: -10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #DC143C;
+            opacity: 0.7;
+            font-family: 'Cinzel Decorative', cursive;
+            white-space: nowrap;
+        }
+
+        .milestone-marker {
+            position: absolute;
+            left: 0;
+            width: 5vw;
+            max-width: 80px;
+            border-bottom: 1px dashed #8B4513;
+            opacity: 0.7;
+        }
+
+        .milestone-text {
+            position: absolute;
+            left: calc(100% + 10px);
+            top: -10px;
+            font-size: 1rem;
+            line-height: 1;
+            color: #5A3A22;
+            font-family: 'IM Fell English', serif;
+            white-space: nowrap;
+        }
+
+        .milestone-year {
+            font-weight: bold;
+            color: #8B4513;
+            margin-right: 5px;
+        }
+
+        /* Hide ruler on smaller screens */
+        @media (max-width: 1280px) {
+            #historical-ruler {
+                display: none;
+            }
         }
 
         .timeline-node {
@@ -185,67 +280,87 @@
             color: #D4AF37;
         }
 
-/* 领主宣告板块的装饰边角样式 */
-.narrative-corner {
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    border-color: #DC143C;
-    border-style: solid;
-}
-.corner-tl { top: -2px; left: -2px; border-width: 3px 0 0 3px; }
-.corner-tr { top: -2px; right: -2px; border-width: 3px 3px 0 0; }
-.corner-bl { bottom: -2px; left: -2px; border-width: 0 0 3px 3px; }
-.corner-br { bottom: -2px; right: -2px; border-width: 0 3px 3px 0; }
+        /* 领主宣告板块的装饰边角样式 */
+        .narrative-corner {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-color: #DC143C;
+            border-style: solid;
+        }
+        .corner-tl { top: -2px; left: -2px; border-width: 3px 0 0 3px; }
+        .corner-tr { top: -2px; right: -2px; border-width: 3px 3px 0 0; }
+        .corner-bl { bottom: -2px; left: -2px; border-width: 0 0 3px 3px; }
+        .corner-br { bottom: -2px; right: -2px; border-width: 0 3px 3px 0; }
 
-/* =========================================
-   移动端适配 (Mobile Optimization)
-   ========================================= */
-@media (max-width: 768px) {
-    /* 1. 减小容器内边距，给内容腾出空间 */
-    .parchment-container {
-        padding: 20px !important;
-        margin: 20px auto !important;
-        width: 95% !important;
-    }
+        /* =========================================
+           移动端适配 (Mobile Optimization)
+           ========================================= */
+        @media (max-width: 768px) {
+            /* 1. 减小容器内边距，给内容腾出空间 */
+            .parchment-container {
+                padding: 20px !important;
+                margin: 20px auto !important;
+                width: 95% !important;
+            }
 
-    /* 2. 时间轴改为垂直堆叠布局 */
-    .timeline-node {
-        flex-direction: column !important;
-        margin-bottom: 4rem !important;
-    }
-    
-    /* 3. 让左右两侧的内容块变宽，并居中对齐 */
-    .timeline-node > div[class*="w-5/12"] {
-        width: 100% !important;
-        padding: 0 !important;
-        text-align: center !important;
-        margin-bottom: 1rem;
-    }
+            /* 2. 时间轴改为垂直堆叠布局 */
+            .timeline-node {
+                flex-direction: column !important;
+                margin-bottom: 4rem !important;
+            }
+            
+            /* 3. 让左右两侧的内容块变宽，并居中对齐 */
+            .timeline-node > div[class*="w-5/12"] {
+                width: 100% !important;
+                padding: 0 !important;
+                text-align: center !important;
+                margin-bottom: 1rem;
+            }
 
-    /* 4. 隐藏中间的垂直线（手机上太挤了，隐藏更清爽） */
-    .timeline-line {
-        display: none;
-    }
+            /* 4. 隐藏中间的垂直线（手机上太挤了） */
+            .timeline-line {
+                display: none;
+            }
 
-    /* 5. 调整中间图标的位置 */
-    .timeline-marker {
-        margin: 10px auto;
-    }
+            /* 5. 调整中间图标的位置 */
+            .timeline-marker {
+                margin: 10px auto;
+            }
 
-    /* 6. 调整各级标题大小，防止换行溢出 */
-    h1 { font-size: 2.5rem !important; line-height: 1.2 !important; }
-    h2 { font-size: 2rem !important; }
-    h3 { font-size: 1.5rem !important; }
-    
-    /* 7. 调整 Header 内边距 */
-    header { padding: 2rem 1rem !important; }
-}
+            /* 6. 调整标题大小 */
+            h1 {
+                font-size: 2.5rem !important; /* text-4xl approx */
+                line-height: 1.2 !important;
+            }
+            
+            /* 7. 调整副标题 */
+            header p {
+                font-size: 1.2rem !important;
+            }
 
+            /* 8. 调整 Header 内边距 */
+            header {
+                padding: 2rem 1rem !important;
+            }
+
+            /* 9. 调整 h2 标题大小 */
+            h2 {
+                font-size: 2rem !important;
+            }
+
+            /* 10. 调整 h3 标题大小 (世代标题) */
+            h3 {
+                font-size: 1.5rem !important;
+            }
+        }
     </style>
 </head>
 <body>
     <div id="top"></div> 
+
+    <!-- Historical Ruler (Background) -->
+    <div id="historical-ruler"></div>
 
     <div class="parchment-container">
         <header class="text-center relative py-16 px-12 border-b-4 border-double border-[#D4AF37]">
@@ -264,7 +379,7 @@
                 </svg>
             </div>
 
-            <h1 class="text-7xl mb-4 leading-tight font-['Cinzel_Decorative'] font-bold">Aelfwyn Cycle</h1>
+            <h1 class="text-4xl md:text-7xl mb-4 leading-tight font-['Cinzel_Decorative'] font-bold">Aelfwyn Cycle</h1>
             <p class="max-w-3xl mx-auto text-2xl text-[#8B4513] leading-relaxed">
                 From the Norman Conquest to the Act of Union
             </p>
@@ -333,7 +448,7 @@
 
       <!-- Timeline Section -->
 <section class="pt-4 pb-10 relative">
-    <div class="flourish">
+    <div id="chronology-header" class="flourish">
         <span class="mx-4 text-3xl font-bold font-[MedievalSharp]">The Chronology of Generations </span>
     </div>
 
@@ -781,11 +896,9 @@ Kateryne “Cate" Ellingworth A.D. 1580</span>
                 <a href="reader.html" class="w-auto px-8 py-2 text-base bg-[#f4ecd8] text-[#8B4513] font-[MedievalSharp] hover:bg-[#eaddcf] transition-all duration-300 border-2 border-[#8B4513] shadow-md no-underline text-center">
                     Explore Full Story
                 </a>
-                <a href="content.md" download="Family_Chronicles.md" class="w-auto px-8 py-2 text-base bg-[#f4ecd8] text-[#8B4513] font-[MedievalSharp] hover:bg-[#eaddcf] transition-all duration-300 border-2 border-[#8B4513] shadow-md no-underline text-center flex items-center justify-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                    </svg>
-                    Download Text
+                <a href="author.html" class="w-auto px-8 py-2 text-base bg-[#f4ecd8] text-[#8B4513] font-[MedievalSharp] hover:bg-[#eaddcf] transition-all duration-300 border-2 border-[#8B4513] shadow-md no-underline text-center flex items-center justify-center gap-2">
+                    <i class="ri-quill-pen-line text-lg"></i>
+                    Author's Note
                 </a>
             </div>
         </div>
@@ -845,5 +958,116 @@ Kateryne “Cate" Ellingworth A.D. 1580</span>
         <i class="ri-arrow-down-line text-[#fdf5e6] text-2xl group-hover:translate-y-1 transition-transform"></i>
     </a>
 </div>
+    <script>
+        const renderRuler = () => {
+            const ruler = document.getElementById('historical-ruler');
+            const header = document.getElementById('chronology-header');
+            if (!ruler || !header) return;
+            
+            ruler.innerHTML = ''; // Clear existing
+            
+            const nodes = document.querySelectorAll('.timeline-node');
+            if (nodes.length < 20) return;
+
+            const gen20 = nodes[19];
+
+            // Calculate absolute Y positions relative to the document
+            const getAbsoluteY = (el, position = 'center') => {
+                const rect = el.getBoundingClientRect();
+                if (position === 'bottom') return rect.bottom + window.scrollY;
+                if (position === 'top') return rect.top + window.scrollY;
+                return rect.top + window.scrollY + (rect.height / 2);
+            };
+
+            // Anchor 1050 to just below the header
+            const yStartAnchor = getAbsoluteY(header, 'bottom') + 140;
+            // Anchor 1600 to the bottom of Gen 20 (last line of text)
+            const yEndAnchor = getAbsoluteY(gen20, 'bottom') - 40;
+
+            const yearStartAnchor = 1050;
+            const yearEndAnchor = 1600;
+            const pixelsPerYear = (yEndAnchor - yStartAnchor) / (yearEndAnchor - yearStartAnchor);
+
+            // Set ruler container height to document height
+            const docHeight = document.body.scrollHeight;
+            ruler.style.height = `${docHeight}px`;
+
+            // Calculate the full range of years that fit on the page
+            const exactStartYear = yearStartAnchor - (yStartAnchor / pixelsPerYear);
+            const exactEndYear = yearStartAnchor + ((docHeight - yStartAnchor) / pixelsPerYear);
+
+            const startYear = Math.floor(exactStartYear / 10) * 10;
+            const endYear = Math.ceil(exactEndYear / 10) * 10;
+
+            // Generate Ticks
+            for (let year = startYear; year <= endYear; year++) {
+                const yPos = yStartAnchor + (year - yearStartAnchor) * pixelsPerYear;
+
+                if (year % 10 === 0) {
+                    const tick = document.createElement('div');
+                    tick.className = 'ruler-tick';
+                    tick.style.top = `${yPos}px`;
+
+                    if (year % 100 === 0) {
+                        tick.classList.add('tick-century');
+                        const label = document.createElement('div');
+                        label.className = 'tick-label';
+                        label.innerText = `A.D. ${year}`;
+                        tick.appendChild(label);
+                    } else if (year % 50 === 0) {
+                        tick.classList.add('tick-half-century');
+                        const label = document.createElement('div');
+                        label.className = 'tick-label-half';
+                        label.innerText = `A.D. ${year}`;
+                        tick.appendChild(label);
+                    } else {
+                        tick.classList.add('tick-decade');
+                    }
+                    ruler.appendChild(tick);
+                }
+            }
+
+            // Generate Milestones (1050 - 1600)
+            const milestones = [
+                { year: 1066, title: "Norman Conquest" },
+                { year: 1086, title: "Domesday Book" },
+                { year: 1135, title: "The Anarchy (Start)" },
+                { year: 1153, title: "The Anarchy (End)" },
+                { year: 1154, title: "Henry II & Angevin Empire" },
+                { year: 1189, title: "Richard I (Third Crusade)" },
+                { year: 1215, title: "Magna Carta" },
+                { year: 1337, title: "Hundred Years' War Begins" },
+                { year: 1348, title: "Black Death" },
+                { year: 1381, title: "Peasants' Revolt" },
+                { year: 1399, title: "Richard II Deposed" },
+                { year: 1415, title: "Battle of Agincourt" },
+                { year: 1455, title: "Wars of the Roses (Start)" },
+                { year: 1485, title: "Battle of Bosworth Field" },
+                { year: 1534, title: "Act of Supremacy" },
+                { year: 1536, title: "Dissolution of Monasteries" },
+                { year: 1558, title: "Elizabeth I Ascends" },
+                { year: 1588, title: "Spanish Armada Defeated" }
+            ];
+
+            milestones.forEach(m => {
+                const yPos = yStartAnchor + (m.year - yearStartAnchor) * pixelsPerYear;
+                
+                const marker = document.createElement('div');
+                marker.className = 'milestone-marker';
+                marker.style.top = `${yPos}px`;
+                
+                const text = document.createElement('div');
+                text.className = 'milestone-text';
+                text.innerHTML = `<span class="milestone-year">${m.year}</span> <span class="milestone-desc">${m.title}</span>`;
+                
+                marker.appendChild(text);
+                ruler.appendChild(marker);
+            });
+        };
+
+        document.addEventListener('DOMContentLoaded', renderRuler);
+        window.addEventListener('load', renderRuler);
+        window.addEventListener('resize', renderRuler);
+    </script>
 </body>
 </html>

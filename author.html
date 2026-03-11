@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Author's Note - Family Chronicles</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=IM+Fell+English:ital@0;1&family=MedievalSharp&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #2c2c2c;
+            background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+            color: #5A3A22;
+            font-family: 'IM Fell English', serif;
+        }
+        
+        /* Parchment Container Effect */
+        .parchment-container {
+            background-color: #fdf5e6;
+            background-image: url('https://www.transparenttextures.com/patterns/aged-paper.png');
+            box-shadow: 0 0 40px rgba(0,0,0,0.5);
+            margin: 40px auto;
+            padding: 60px 80px;
+            max-width: 900px;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        /* Ornate Borders */
+        .parchment-container::before {
+            content: '';
+            position: absolute;
+            top: 15px; left: 15px; right: 15px; bottom: 15px;
+            border: 1px solid #D4AF37;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Cinzel Decorative', cursive;
+            color: #DC143C;
+        }
+
+        .flourish {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 3rem 0 2rem 0;
+        }
+
+        .flourish::before, .flourish::after {
+            content: "";
+            flex: 1;
+            border-bottom: 2px solid #D4AF37;
+            margin: 0 20px;
+            opacity: 0.6;
+        }
+
+        .prose p {
+            margin-bottom: 1.5rem;
+            text-indent: 2rem;
+            text-align: justify;
+        }
+    </style>
+</head>
+<body class="min-h-screen py-10 px-4">
+    
+    <!-- Navigation -->
+    <div class="max-w-4xl mx-auto mb-6">
+        <a href="index.html" class="inline-flex items-center gap-2 text-[#fdf5e6] hover:text-[#D4AF37] transition-colors font-[MedievalSharp] text-lg">
+            <i class="ri-arrow-left-line"></i> Return to Chronicles
+        </a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="parchment-container border-8 border-double border-[#8B4513]">
+        
+        <!-- Header -->
+        <div class="text-center mb-16">
+            <h1 class="text-5xl mb-4">Author's Note</h1>
+            <div class="w-24 h-1 bg-[#D4AF37] mx-auto mt-6 opacity-80"></div>
+        </div>
+
+        <div class="space-y-12 text-xl leading-relaxed">
+            
+            <!-- Foreword -->
+            <section>
+                <div class="flourish">
+                    <h2 class="text-3xl mx-4">Foreword </h2>
+                </div>
+                <div class="prose prose-stone max-w-none">
+                    <p>这个故事的创作初衷其实有点随机。</p>
+                   <p>我有姓名学考据的爱好，所以考据了一堆名字；我又有画族谱的爱好，因此我就想，何不把这群人连成一家人呢？我又有写小说的爱好，因此我就想，何不把这张族谱的人干过什么大概地记载一下呢？</p>
+                    <p>也就是说，先有名字，再有族谱，然后才是小说。并不是为了写小说而搭建了这样错综复杂的家族架构。这一切的本体就是姓名解说和族谱解说，小说才是附带的。</p>
+                </div>
+            </section>
+
+            <!-- On Storytelling -->
+            <section>
+                <div class="flourish">
+                    <h2 class="text-3xl mx-4">On Storytelling </h2>
+                </div>
+                <div class="prose prose-stone max-w-none">
+                    <p>而说到小说的部分。我的故事注重于真实性。真实性与戏剧性之间不得不做出取舍：</p>
+                    
+                    <div class="my-8 pl-6 py-4 pr-4 border-l-4 border-[#D4AF37] bg-[#f4ecd8] bg-opacity-50 space-y-6 text-[#5A3A22] text-[1.1rem] shadow-sm" style="text-indent: 0;">
+                        <div class="flex flex-col md:flex-row gap-2 md:gap-4">
+                            <span class="font-bold text-[#DC143C] whitespace-nowrap">戏剧性是</span> 
+                            <span class="leading-relaxed">分离的恋人放下一个漂流瓶，多年后被临终的另一个人拾起；是在互相猜疑时有人突然死了，最终引出一个惊天的阴谋；是一对母女多年以来背心离德，最后发现母亲其实有难言之隐的苦衷。</span>
+                        </div>
+                        <div class="flex flex-col md:flex-row gap-2 md:gap-4">
+                            <span class="font-bold text-[#8B4513] whitespace-nowrap">真实性是</span> 
+                            <span class="leading-relaxed">分离的恋人放下一个漂流瓶，最终瓶子沉入大海；是互相猜疑时有人突然死了，结果只是完全无关的偶然病逝；是一对母女多年以来背心离德，最后发现一切只是单纯的彼此不喜欢。</span>
+                        </div>
+                    </div>
+                    
+                    <p>所以，这个故事必然没有那么多的巧合，没有那么多的寓意，没有那么多的波澜壮阔，有的大多数伤病与死亡，结果都只是时代条件不发达所致，而非人为阴谋。</p>
+                </div>
+            </section>
+
+            <!-- Notes & Warnings -->
+            <section>
+                <div class="flourish">
+                    <h2 class="text-3xl mx-4">Notes <span class="text-xl text-[#8B4513] font-[MedievalSharp] ml-2">注意事项</span></h2>
+                </div>
+                <div class="bg-[#f4ecd8] border-l-4 border-[#DC143C] p-8 shadow-inner text-lg space-y-6">
+                    <div class="flex gap-4 items-start">
+                        <i class="ri-history-line text-[#DC143C] text-2xl mt-1"></i> 
+                        <span class="leading-relaxed">本故事注重于虚构家族史+反应姓名学的时代变迁，对于历史事件的考据有限。对于真实历史大多简化、虚构或艺术加工。具体而言，本故事在不同国王任期、重大事件（如诺曼征服、玫瑰战争）时事情如期发生，但关于细节则无过度考据。其中出现的少量真实历史人物，也均为其对应虚构版本或艺术加工版本。</span>
+                    </div>
+                    <div class="flex gap-4 items-start">
+                        <i class="ri-earth-line text-[#DC143C] text-2xl mt-1"></i> 
+                        <span class="leading-relaxed">考虑到本故事包含的虚构内容，可以这样说：它发生一个平行世界版本的英格兰，与现实有相似之处，但并非现实。</span>
+                    </div>
+                    <div class="flex gap-4 items-start">
+                        <i class="ri-quill-pen-line text-[#DC143C] text-2xl mt-1"></i> 
+                        <span class="leading-relaxed">鉴于本故事的创作初衷，故事内时不时会有大量可能不合时宜、可能强行插入的姓名学解说等。以及一些其他的作者本人的现代用语。</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About the Author -->
+            <section>
+                <div class="flourish">
+                    <h2 class="text-3xl mx-4">About the Author <span class="text-xl text-[#8B4513] font-[MedievalSharp] ml-2">关于作者</span></h2>
+                </div>
+                <div class="prose prose-stone max-w-none text-center" style="text-indent: 0;">
+                    <p class="mb-4">本故事为纯OC（Original Character）作品，文字内容仅供自娱自乐，没有盈利的想法。网站用于在朋友之间互相传阅。</p>
+                    <p>虽然作者没有自行公开宣传的想法，但如果有偶然读到想要转发分享给身边的人看的读者，也是完全OK的。</p>
+                    <p>十分感谢你的喜欢。</p>
+                    
+                    <div class="mt-12 flex flex-wrap justify-center gap-4 text-[#8B4513] font-bold tracking-widest text-lg font-[MedievalSharp]">
+                        <span class="bg-[#f4ecd8] px-4 py-2 border border-[#D4AF37] rounded-sm shadow-sm">#AelfwynCycle</span>
+                        <span class="bg-[#f4ecd8] px-4 py-2 border border-[#D4AF37] rounded-sm shadow-sm">#艾尔芙温循环</span>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- Footer Signature -->
+        <div class="mt-20 pt-10 border-t border-[#D4AF37] border-opacity-50 text-center text-[#8B4513] opacity-80">
+            <i class="ri-quill-pen-fill text-4xl mb-4 block"></i>
+            <div class="font-[MedievalSharp] text-lg">Written with ink and time</div>
+        </div>
+        
+    </div>
+
+</body>
+</html>
